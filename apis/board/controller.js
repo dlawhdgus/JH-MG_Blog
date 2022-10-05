@@ -12,7 +12,7 @@ exports.CreateArticleCode = (req, res) => {
         if (!body || typeof body !== 'string') return res.status(400).send('본문을 입력해주세요')
         else {
             filter.body = body
-            filter.createAt = `${date.getFullYear()}년 ${date.getMonth()+1}월 ${date.getDate()}일`
+            filter.createAt = `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`
         }
         exports.CreateFilter = filter
         DBQuery.CreateArticleQuery(req, res)
@@ -53,7 +53,7 @@ exports.UpdateArticleCode = (req, res) => {
         if (subtitle && typeof subtitle === 'string') updateQuery.$set.subtitle = subtitle
         if (body && typeof body === 'string') {
             updateQuery.$set.body = body
-            updateQuery.$set.createAt = `${date.getFullYear()}년 ${date.getMonth()+1}월 ${date.getDate()}일`
+            updateQuery.$set.createAt = `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`
         }
 
         exports.Patch_ObjectId = id
