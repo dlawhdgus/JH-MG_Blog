@@ -1,5 +1,4 @@
-const express = require('express')
-const DBQuery = require('../../model/board/db')
+const BoardDB = require('../../models/board/db')
 
 exports.CreateArticleCode = (req, res) => {
     try {
@@ -15,8 +14,7 @@ exports.CreateArticleCode = (req, res) => {
             filter.createAt = `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`
         }
         exports.CreateFilter = filter
-        DBQuery.CreateArticleQuery(req, res)
-
+        BoardDB.CreateArticleQuery((result) => {if(result) res.send('success')})
     } catch (error) {
         res.status(500).send('Internal Server Error')
     }
@@ -24,7 +22,7 @@ exports.CreateArticleCode = (req, res) => {
 
 exports.ReadArticleAllCode = (req, res) => {
     try {
-        DBQuery.ReadArticleAllQuery(req, res)
+        BoardDB.ReadArticleAllQuery((result) => res.send(result))
     } catch (error) {
         return res.status(500).send('Internal Server Error')
     }
@@ -35,7 +33,10 @@ exports.ReadArticleIdCode = (req, res) => {
         const { id } = req.params
         if (id.length !== 24) res.status(400).send('Bad Request')
         exports.Get_ObjectId = id
-        DBQuery.ReadArticleIdQuery(req, res)
+        BoardDB.ReadArticleIdQuery((result) => {
+            if (!result) return res.status(404).send('Not Found')
+            else return res.send(result)
+        })
     } catch (error) {
         return res.status(500).send('Internal Server Error')
     }
@@ -58,7 +59,10 @@ exports.UpdateArticleCode = (req, res) => {
 
         exports.Patch_ObjectId = id
         exports.PatchUpdateQuery = updateQuery
-        DBQuery.UpdateArticleQuery(req, res)
+        BoardDB.UpdateArticleQuery((result) => {
+            if(result) res.status(404).send('Not Found')
+            else res.send('success')
+        })
     } catch (error) {
         return res.status(500).send('Internal Server Error')
     }
@@ -69,8 +73,11 @@ exports.DeleteOneArticleCode = (req, res) => {
         const { id } = req.params
         if (id.length !== 24) res.status(400).send('Bad Request')
         exports.DeleteObjectId = id
-        DBQuery.DeleteOneArticleQuery(req, res)
+        BoardDB.DeleteOneArticleQuery((result) => {
+            if(result) res.status(404).send('Not Found')
+            else res.send('success')
+        })
     } catch (error) {
-        return res.status(500).send('')
+        return res.status(500).send('Internal Server Error')
     }
 }
