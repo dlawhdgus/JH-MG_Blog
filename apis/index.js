@@ -7,5 +7,4 @@ const paths = [
 
 paths.forEach(path => router.use(path, require(`.${path}`)))
 
-
 module.exports = router
