@@ -1,9 +1,8 @@
 const express = require('express')
 const app = express()
 const config = require('./config')
-const { DBConnect } = require('./DBconnect')
-
 const routes = require('./apis/index')
+const { dbconnect } = require('./DBconnect')
 
 app.use(express.json())
 app.use('/api',routes)
@@ -15,5 +14,5 @@ app.all('/*',(req,res) => {
 app.listen(config.port, () => {
     console.log(`Server On!!
 port number is 2008`)
-    DBConnect()
+    dbconnect
 })
