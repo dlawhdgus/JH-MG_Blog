@@ -1,17 +1,17 @@
-const MongoClient = require('mongodb').MongoClient
 const config = require('./config')
-const ObjectId = require('mongodb').ObjectId
+const mongoose = require('mongoose')
 
-exports.DBConnect = () => {
-    MongoClient.connect(config.MONGODB_CONNECT_STRING, function (err, db) {
-        if (err) throw err
-        else {
-            const dbo = db.db("db")
-            const db_article = dbo.collection("blog-article")
-            exports.collection = db_article
-            console.log('DB connecting success')
-        }
-    })
-}
+mongoose.connect(config.MONGODB_CONNECT_STRING, {
+    dbName : 'db'
+})
 
-exports.ObjectId = ObjectId
+const db = mongoose.connection
+
+exports.dbconnect = db.once("open" , ()=>{
+    console.log('DB Connected!!')
+})
+
+db.on("error",(err) => {
+    console.log(err)
+})
+
