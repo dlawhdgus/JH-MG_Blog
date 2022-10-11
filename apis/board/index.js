@@ -4,7 +4,8 @@ const controller = require('./controller')
 router
     .post('/', controller.CreateArticleCode)
     .get('/', controller.ReadArticleAllCode)
-    .get('/:id', controller.ReadArticleIdCode)
-    .patch('/:id', controller.UpdateArticleCode)
-    .delete('/:id', controller.DeleteOneArticleCode)
+    .get('/:_id', controller.ReadArticleIdCode)
+    .patch('/:_id', controller.UpdateArticleCode)
+    .delete('/:_id', controller.DeleteOneArticleCode)
+    .delete('/', controller.DeleteManyArticleCode)
 module.exports = router
