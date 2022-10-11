@@ -1,4 +1,4 @@
-const BoardDB = require('../../models/board/db')
+const BoardDB = require('../../models/board/board_db')
 
 exports.CreateArticleCode = (req, res) => {
     try {
@@ -13,8 +13,7 @@ exports.CreateArticleCode = (req, res) => {
             filter.body = body
             filter.createAt = `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`
         }
-        exports.CreateFilter = filter
-        BoardDB.CreateArticleQuery((result) => {if(result) res.send('success')})
+        BoardDB.CreateArticleQuery(((result) => {if(result) res.send('success')}),filter)
     } catch (error) {
         res.status(500).send('Internal Server Error')
     }
@@ -30,13 +29,12 @@ exports.ReadArticleAllCode = (req, res) => {
 
 exports.ReadArticleIdCode = (req, res) => {
     try {
-        const { id } = req.params
-        if (id.length !== 24) res.status(400).send('Bad Request')
-        exports.Get_ObjectId = id
-        BoardDB.ReadArticleIdQuery((result) => {
+        const { _id } = req.params
+        if (_id.length !== 24) res.status(400).send('Bad Request')
+        BoardDB.ReadArticleIdQuery(((result) => {
             if (!result) return res.status(404).send('Not Found')
             else return res.send(result)
-        })
+        }),_id)
     } catch (error) {
         return res.status(500).send('Internal Server Error')
     }
@@ -44,11 +42,11 @@ exports.ReadArticleIdCode = (req, res) => {
 
 exports.UpdateArticleCode = (req, res) => {
     try {
-        const { id } = req.params
+        const { _id } = req.params
         const { title, subtitle, body } = req.body
         const updateQuery = { $set: {} }
         const date = new Date()
-        if (id.length !== 24) res.status(400).send('Bad Request')
+        if (_id.length !== 24) res.status(400).send('Bad Request')
         if ((!title || typeof title !== 'string') && (!subtitle || typeof subtitle !== 'string') && (!body || typeof body !== 'string')) return res.status(400).send('Bad Request')
         if (title && typeof title === 'string') updateQuery.$set.title = title
         if (subtitle && typeof subtitle === 'string') updateQuery.$set.subtitle = subtitle
@@ -57,12 +55,10 @@ exports.UpdateArticleCode = (req, res) => {
             updateQuery.$set.createAt = `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`
         }
 
-        exports.Patch_ObjectId = id
-        exports.PatchUpdateQuery = updateQuery
-        BoardDB.UpdateArticleQuery((result) => {
+        BoardDB.UpdateArticleQuery(((result) => {
             if(result) res.status(404).send('Not Found')
             else res.send('success')
-        })
+        }),_id,updateQuery)
     } catch (error) {
         return res.status(500).send('Internal Server Error')
     }
@@ -70,13 +66,27 @@ exports.UpdateArticleCode = (req, res) => {
 
 exports.DeleteOneArticleCode = (req, res) => {
     try {
-        const { id } = req.params
-        if (id.length !== 24) res.status(400).send('Bad Request')
-        exports.DeleteObjectId = id
-        BoardDB.DeleteOneArticleQuery((result) => {
+        const { _id } = req.params
+        if (_id.length !== 24) res.status(400).send('Bad Request')
+        BoardDB.DeleteOneArticleQuery(((result) => {
             if(result) res.status(404).send('Not Found')
             else res.send('success')
-        })
+        }),_id)
+    } catch (error) {
+        return res.status(500).send('Internal Server Error')
+    }
+}
+
+exports.DeleteManyArticleCode = (req,res) => {
+    try {
+        const {_id } = req.body
+        const id_filter = []
+        for (item in _id) id_filter[item] = ObjectId(_id[item])
+        const filter = { _id: { $in: id_filter } }
+        BoardDB.DeleteManyBoard(((result) => {
+            if (result) res.status(404).send('Not Found')
+            else res.send('success')
+        }), filter)
     } catch (error) {
         return res.status(500).send('Internal Server Error')
     }
