@@ -1,8 +1,12 @@
 const express = require('express')
 const app = express()
 const config = require('./config')
-const routes = require('./apis/index')
+const routes = require('./routes/apis')
 const { dbconnect } = require('./DBconnect')
+const passport = require('passport')
+const passportConfig = require('./middlewares/passport')
+
+passportConfig()
 
 app.use(express.json())
 app.use('/api',routes)
