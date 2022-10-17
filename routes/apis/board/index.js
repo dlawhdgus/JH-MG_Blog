@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const controller = require('./board_controller')
+const controller = require('./controller')
 
 router
     .post('/', controller.CreateArticleCode)

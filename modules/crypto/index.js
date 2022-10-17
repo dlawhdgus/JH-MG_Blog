@@ -2,7 +2,7 @@ const CryptoJS = require('crypto-js')
 const config = require('../../config')
 
 exports.encoding = (password) => {
-    return CryptoJS.AES.encrypt(JSON.stringify(password), config.CRYPTO_SECRET_KEY.toString())
+    return CryptoJS.AES.encrypt(JSON.stringify(password), config.CRYPTO_SECRET_KEY).toString()
 }
 
 exports.decoding = (password) => {

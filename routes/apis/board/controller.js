@@ -1,10 +1,14 @@
-const BoardDB = require('../../models/board/board_db')
+const BoardDB = require('../../../dbs/board/board_db')
+const jwt = require('../../../modules/jwt')
 
 exports.CreateArticleCode = (req, res) => {
     try {
         const { title, subtitle, body } = req.body
         const filter = {}
         const date = new Date()
+        const { authorization } = req.headers
+        const userdata = jwt.verify_token(authorization)
+        
         if (!title || typeof title !== 'string') return res.status(400).send('제목을 다시 입력해주세요')
         else filter.title = title
         if (subtitle) filter.subtitle = subtitle
@@ -13,7 +17,9 @@ exports.CreateArticleCode = (req, res) => {
             filter.body = body
             filter.createAt = `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`
         }
+
         BoardDB.CreateArticleQuery(((result) => {if(result) res.send('success')}),filter)
+
     } catch (error) {
         res.status(500).send('Internal Server Error')
     }

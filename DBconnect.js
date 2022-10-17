@@ -11,7 +11,5 @@ exports.dbconnect = db.once("open" , ()=>{
     console.log('DB Connected!!')
 })
 
-db.on("error",(err) => {
-    console.log(err)
-})
+db.on("error",(e) => {if(e) throw e})
 

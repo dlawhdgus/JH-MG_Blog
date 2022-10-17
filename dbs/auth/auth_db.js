@@ -1,6 +1,11 @@
 const { connection } = require('mongoose')
 const ObjectId = require('mongoose').Types.ObjectId
 const AuthColl = connection.collection('blog-auth')
+const crypto = require('../../modules/crypto')
+
+exports.UserDateQuery = (callback) => {
+    AuthColl.find().toArray().then(result => callback(result))
+}
 
 exports.SignUpQuery = (callback, params = {}, EmailErrorMessage, NicknameErrorMessage) => {
     const { email, nickname, password, introduce } = params
@@ -11,7 +16,7 @@ exports.SignUpQuery = (callback, params = {}, EmailErrorMessage, NicknameErrorMe
     if (!nickname && typeof nickname !== 'string') callback(true)
     else CreateUserFilter.nickname = nickname
     if (!password && typeof password !== 'string') callback(true)
-    else CreateUserFilter.password = password
+    else CreateUserFilter.password = crypto.encoding(password)
     if (introduce) CreateUserFilter.introduce = introduce
 
     AuthColl.findOne({ email: email })
@@ -27,6 +32,6 @@ exports.SignUpQuery = (callback, params = {}, EmailErrorMessage, NicknameErrorMe
         })
 }
 
-exports.UserDateQuery = (callback) => {
-    AuthColl.find().toArray().then(result => callback(result))
+exports.SignInQuery = () => {
+
 }
