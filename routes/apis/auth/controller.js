@@ -1,4 +1,4 @@
-const AuthDB = require('../../../dbs/auth/auth_db')
+const AuthDB = require('../../../models/auth/auth_db')
 const jwt = require('../../../modules/jwt')
 
 exports.UserDataCode = (req, res) => {
