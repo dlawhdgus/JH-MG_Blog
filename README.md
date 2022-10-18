@@ -1,5 +1,5 @@
 # auth
-    ```javascript
+--------------------------------------------
     - Post /api/auth/sign-up
     example : {
         "email":"example@gmail.com",    //not null   
@@ -15,9 +15,9 @@
     }
     - Get /api/auth
         show all user's data
-    ```
+    
 # board
-    ```javascript
+--------------------------------------------
     - Get /api/board
         show all board's data
 
@@ -40,4 +40,4 @@
     example : {
         _id : ["_id","_id"]     //_id값을 넣어 여러개 삭제
     }
-    ```
+    
