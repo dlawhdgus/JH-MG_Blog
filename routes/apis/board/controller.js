@@ -8,9 +8,9 @@ exports.CreateArticleCode = (req, res) => {
         const date = new Date()
         const { authorization } = req.headers
 
-        if(jwt.verify_token(authorization)){
+        if (jwt.verify_token(authorization)) {
             const userdata = jwt.verify_token(authorization)
-            if(jwt.expireAtCheck(authorization)) {
+            if (jwt.expireAtCheck(authorization)) {
                 if (!title || typeof title !== 'string') return res.status(400).send('제목을 다시 입력해주세요')
                 else {
                     filter.user_id = userdata.user_id
@@ -23,7 +23,7 @@ exports.CreateArticleCode = (req, res) => {
                     filter.createdAt = `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`
                 }
 
-                BoardDB.CreateArticleQuery(((result) => {if(result) res.send('success')}),filter)
+                BoardDB.CreateArticleQuery(((result) => { if (result) res.send('success') }), filter)
             }
             else return res.status(400).send('토큰 만료, 재 로그인')
         }
@@ -37,11 +37,11 @@ exports.CreateArticleCode = (req, res) => {
 exports.ReadArticleAllCode = (req, res) => {
     try {
         BoardDB.ReadArticleAllQuery((result) => {
-            if(isEmptyArr(result)) res.send('No Posts')
+            if (isEmptyArr(result)) res.send('No Posts')
         })
 
-        function isEmptyArr(arr)  {
-            if(Array.isArray(arr) && arr.length === 0)  return true
+        function isEmptyArr(arr) {
+            if (Array.isArray(arr) && arr.length === 0) return true
             else return false
         }
     } catch (error) {
@@ -56,7 +56,7 @@ exports.ReadArticleIdCode = (req, res) => {
         BoardDB.ReadArticleIdQuery(((result) => {
             if (!result) return res.status(404).send('Not Found')
             else return res.send(result)
-        }),_id)
+        }), _id)
     } catch (error) {
         return res.status(500).send('Internal Server Error')
     }
@@ -70,9 +70,9 @@ exports.UpdateArticleCode = (req, res) => {
         const date = new Date()
         const { authorization } = req.headers
 
-        if(jwt.verify_token(authorization)){
+        if (jwt.verify_token(authorization)) {
             const userdata = jwt.verify_token(authorization)
-            if(jwt.expireAtCheck(authorization)) {
+            if (jwt.expireAtCheck(authorization)) {
                 //만약 제목이 중복되어있는 게시물이 있다면 ObjectId로 판별
                 if (_id.length !== 24) res.status(400).send('Bad Request')
                 if ((!title || typeof title !== 'string') && (!subtitle || typeof subtitle !== 'string') && (!body || typeof body !== 'string')) return res.status(400).send('Bad Request')
@@ -82,11 +82,11 @@ exports.UpdateArticleCode = (req, res) => {
                     updateQuery.$set.body = body
                     updateQuery.$set.createdAt = `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`
                 }
-        
+
                 BoardDB.UpdateArticleQuery(((result) => {
-                    if(result) res.status(404).send('Not Found')
+                    if (result) res.status(404).send('Not Found')
                     else res.send('success')
-                }),_id,updateQuery,userdata)
+                }), _id, updateQuery, userdata)
             }
             else return res.status(400).send('토큰 만료, 재 로그인')
         }
@@ -100,15 +100,15 @@ exports.UpdateArticleCode = (req, res) => {
 exports.DeleteOneArticleCode = (req, res) => {
     try {
         const { _id } = req.params
-        if(jwt.verify_token(authorization)){
+        if (jwt.verify_token(authorization)) {
             const userdata = jwt.verify_token(authorization)
-            if(jwt.expireAtCheck(authorization)) {
+            if (jwt.expireAtCheck(authorization)) {
                 if (_id.length !== 24) res.status(400).send('Bad Request')
 
                 BoardDB.DeleteOneArticleQuery(((result) => {
-                    if(result) res.status(404).send('Not Found')
+                    if (result) res.status(404).send('Not Found')
                     else res.send('success')
-                }),_id,userdata)
+                }), _id, userdata)
             }
             else return res.status(400).send('토큰 만료, 재 로그인')
         }
@@ -118,9 +118,9 @@ exports.DeleteOneArticleCode = (req, res) => {
     }
 }
 
-exports.DeleteManyArticleCode = (req,res) => {
+exports.DeleteManyArticleCode = (req, res) => {
     try {
-        const {_id } = req.body
+        const { _id } = req.body
         const id_filter = []
         for (item in _id) id_filter[item] = ObjectId(_id[item])
         const filter = { _id: { $in: id_filter } }

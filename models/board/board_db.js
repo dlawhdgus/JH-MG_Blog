@@ -8,15 +8,15 @@ exports.CreateArticleQuery = (callback, CreateArticleFilter) => {
 }
 
 exports.ReadArticleIdQuery = (callback, _id) => {
-    const projection = { _id : 0, user_id : 0}
-    ArticleColl.findOne({ _id: ObjectId(_id) }, {projection : projection})
+    const projection = { _id: 0, user_id: 0 }
+    ArticleColl.findOne({ _id: ObjectId(_id) }, { projection: projection })
         .then(result => callback(result))
 }
 
 
 exports.ReadArticleAllQuery = (callback) => {
-    const projection = { _id : 0, user_id : 0}
-    ArticleColl.find({},{projection : projection}).toArray()
+    const projection = { _id: 0, user_id: 0 }
+    ArticleColl.find({}, { projection: projection }).toArray()
         .then(result => callback(result))
 }
 
