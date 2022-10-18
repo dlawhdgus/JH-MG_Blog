@@ -1,5 +1,7 @@
 const jwt = require('jsonwebtoken')
 const config = require('../../config')
+const date = new Date()
+
 
 exports.token = (ObjID) => {
     return jwt.sign(
@@ -16,9 +18,23 @@ exports.token = (ObjID) => {
 }
 
 exports.verify_token = (authorization) => {
+    if(!authorization) return false
+    else {
+        const token = authorization.split(' ')[1]
+        const userdata = jwt.decode(token, config.JWT_PRIVATE_KEY)
+        return userdata
+    }
+}
+
+exports.expireAtCheck = (authorization) => {
     const token = authorization.split(' ')[1]
     const userdata = jwt.decode(token, config.JWT_PRIVATE_KEY)
-    return userdata
+    const ExpireTimeStamp = userdata.exp
+    const expireAt = new Date(Number(ExpireTimeStamp+'000')).toLocaleString()
+    const now = date.toLocaleString()
+
+    if(expireAt > now) return(true)
+    else return false
 }
 
 //iat => 발급시간
