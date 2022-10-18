@@ -34,6 +34,6 @@ exports.SignInCode = (req, res) => {
     try {
         const { user } = req
         const token = jwt.token(user._id)
-        res.send(`login success message ${token}`)
+        res.send(token)
     } catch (e) { if (e) throw e }
 }
