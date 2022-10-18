@@ -19,7 +19,6 @@ exports.SignUpCode = (req, res) => {
     if (email.match(/[\w\-\.]+\@[\w\-\.]+\.[\w\-\.]+/g) === null) return res.status(400).send('잘못된 형식의 이메일 입니다.')
     if (!nickname || typeof nickname !== 'string') return res.status(400).send('닉네임을 다시 입력해주세요.')
     if (!password || typeof password !== 'string') return res.status(400).send('비밀번호를 다시 입력해 주세요.')
-    if (typeof introduce !== 'string') return res.status(400).send('한줄 소개가 잘못 되었습니다.')
 
     AuthDB.SignUpQuery((result => {
         if (result) return res.status(404).send('Not Found')
