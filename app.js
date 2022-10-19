@@ -9,9 +9,9 @@ const passportConfig = require('./middlewares/passport')
 passportConfig()
 
 app.use(express.json())
-app.use('/api',routes)
+app.use('/api', routes)
 
-app.all('/*',(req,res) => {
+app.all('/*', (req, res) => {
     res.status(404).send('Not Found')
 })
 

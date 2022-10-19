@@ -8,26 +8,28 @@ exports.CreateArticleQuery = (callback, CreateArticleFilter) => {
 }
 
 exports.ReadArticleIdQuery = (callback, _id) => {
-    ArticleColl.findOne({ _id: ObjectId(_id) })
+    const projection = { _id: 0, user_id: 0 }
+    ArticleColl.findOne({ _id: ObjectId(_id) }, { projection: projection })
         .then(result => callback(result))
 }
 
 
 exports.ReadArticleAllQuery = (callback) => {
-    ArticleColl.find().toArray()
+    const projection = { _id: 0, user_id: 0 }
+    ArticleColl.find({}, { projection: projection }).toArray()
         .then(result => callback(result))
 }
 
-exports.UpdateArticleQuery = (callback, _id, UpdateArticleQuery) => {
-    ArticleColl.updateOne({ _id: ObjectId(_id) }, UpdateArticleQuery)
+exports.UpdateArticleQuery = (callback, _id, UpdateArticleQuery, userdata) => {
+    ArticleColl.updateOne({ _id: ObjectId(_id), user_id: ObjectId(userdata.user_id) }, UpdateArticleQuery)
         .then(result => {
             if (result.matchedCount === 0) callback(true)
             else callback(false)
         })
 }
 
-exports.DeleteOneArticleQuery = (callback, _id) => {
-    ArticleColl.deleteOne({ _id: ObjectId(_id) })
+exports.DeleteOneArticleQuery = (callback, _id, userdata) => {
+    ArticleColl.deleteOne({ _id: ObjectId(_id), user_id: ObjectId(userdata.user_id) })
         .then(result => {
             if (result.deletedCount === 0) callback(true)
             else callback(false)
