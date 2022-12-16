@@ -1,41 +1,27 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import HomeView from "../components/HomeView.vue";
-import LoginView from "../components/LoginView.vue";
-import ArticlesArticle from "../components/ArticlesArticle.vue";
-import ArticlesPublish from "../components/ArticlesPublish.vue";
-
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: "/",
     name: "HomeView",
-    component: HomeView,
+    component: () => import("../components/page/HomeView"),
   },
   {
     path: "/login",
     name: "LoginView",
-    component: LoginView,
+    component: () => import("../components/page/LoginView"),
   },
   {
-    path: "/write",
-    name: "ArticlesPublish",
-    component: ArticlesPublish,
-  },
-  {
-    path: "/articles/:id",
-    name: "ArticlesArticle",
-    component: ArticlesArticle,
+    path: "/publish",
+    name: "PublishView",
+    component: () => import("../components/page/PublishView"),
   },
   // {
-  //   path: "/about",
-  //   name: "about",
-  //   // route level code-splitting
-  //   // this generates a separate chunk (about.[hash].js) for this route
-  //   // which is lazy-loaded when the route is visited.
-  //   component: () =>
-  //     import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
+  //   path: "/articles/:id",
+  //   name: "ArticlesArticle",
+  //   component: () => import("../views/ArticlesArticle.vue"),
   // },
 ];
 

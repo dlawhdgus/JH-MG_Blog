@@ -1,16 +1,17 @@
 <template>
   <div>
-    <router-link :to="{ name: 'HomeView' }">Home</router-link>
-    <router-link :to="{ name: 'LoginView' }">Login</router-link>
-    <router-link :to="{ name: 'ArticlesPublish' }">Publish</router-link>
+    <header-bar />
     <router-view />
   </div>
 </template>
 
 <script>
+import HeaderBar from './components/HeaderBar.vue';
 export default {
   name: "App",
-
+  components: {
+    HeaderBar
+  },
   data: () => ({
     //
   }),

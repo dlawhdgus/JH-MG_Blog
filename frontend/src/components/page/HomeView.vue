@@ -6,9 +6,8 @@
         <router-link
           :to="{ name: 'ArticlesArticle', params: { id: board._id } }"
         >
-          <h4>{{ board.title }}</h4>
-          <h6>{{ board.subtitle }}</h6>
-          <p>{{ board.body }}</p>
+          <h2>{{ board.title }}</h2>
+          <h4>{{ board.subtitle }}</h4>
         </router-link>
       </li>
     </ul>
@@ -24,21 +23,13 @@ export default {
   },
   created() {
     this.fetchCurationBoard();
-    // this.$axios
-    //   .post("/api/auth/sign-up", {
-    //     email: "hahaha@naver.com",
-    //     nickname: "hong",
-    //     password: "123",
-    //     introduce: "safasfsafsda",
-    //   })
-    //   .catch((res) => console.log(res));
   },
   methods: {
     fetchCurationBoard: async function () {
-      const response = await this.$axios.get("/api/board");
-      console.log(response);
+      const { data } = await this.$axios.get("/api/board");
+      console.log(data);
 
-      this.boards = response.data;
+      this.boards = data;
     },
   },
 };
