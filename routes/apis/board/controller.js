@@ -17,7 +17,7 @@ exports.CreateArticleCode = (req, res) => {
                     filter.title = title
                 }
                 if (subtitle) filter.subtitle = subtitle
-                if (!body || typeof body !== 'string') return res.status(400).send('본문을 입력해주세요')
+                if (!body) return res.status(400).send('본문을 입력해주세요')
                 else {
                     filter.body = body
                     filter.createdAt = `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`
